@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Nettit.Data;
+using Nettit.Services;
 
 namespace Nettit
 {
@@ -52,8 +54,11 @@ namespace Nettit
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddRazorPages();
+
+            // builder.Services.AddTransient<IEmailSender, EmailSender>();
 
             var app = builder.Build();
 

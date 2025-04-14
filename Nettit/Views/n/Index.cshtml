@@ -1,0 +1,26 @@
+﻿@model Nettit.Models.nChatroomViewModel
+
+@{
+    ViewData["Title"] = "n";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Chatroom</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Chatroom.Title)
+            @Html.DisplayNameFor(model => model.Chatroom.Code)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Chatroom.Title)
+            @Html.DisplayFor(model => model.Chatroom.Code)
+        </dd>
+    </dl>
+
+    @foreach (var item in Model.Messages) {
+        <p>@item.Content</p>
+    }
+</div>

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Nettit.Data.Entity.Chatroom>
+﻿@model IEnumerable<Nettit.Data.Entity.Message>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,8 +13,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
-                @Html.DisplayNameFor(model => model.Code)
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Chatroom)
             </th>
             <th></th>
         </tr>
@@ -23,8 +28,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
-                @Html.DisplayFor(modelItem => item.Code)
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Chatroom.Code)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,12 +20,14 @@ namespace Nettit.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Chatrooms
         public async Task<IActionResult> Index()
         {
             return View(await _context.Chatrooms.ToListAsync());
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Chatrooms/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -43,19 +46,26 @@ namespace Nettit.Controllers
             return View(chatroom);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Chatrooms/Create
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "User,Admin")]
         // POST: Chatrooms/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Code,Id")] Chatroom chatroom)
+        public async Task<IActionResult> Create([Bind("Title,Id")] Chatroom chatroom)
         {
+            chatroom.Code = Convert.ToBase64String(Guid.NewGuid().ToByteArray())
+                .TrimEnd('=')
+                .Replace('+', '-')
+                .Replace('/', '_');
+
             if (ModelState.IsValid)
             {
                 _context.Add(chatroom);
@@ -65,6 +75,7 @@ namespace Nettit.Controllers
             return View(chatroom);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Chatrooms/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -81,6 +92,7 @@ namespace Nettit.Controllers
             return View(chatroom);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Chatrooms/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -116,6 +128,7 @@ namespace Nettit.Controllers
             return View(chatroom);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Chatrooms/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -134,6 +147,7 @@ namespace Nettit.Controllers
             return View(chatroom);
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Chatrooms/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

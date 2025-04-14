@@ -11,7 +11,9 @@ public class Chatroom : BaseEntity
     public virtual ICollection<Message> Messages { get; set; }
 
     [Required]
-    public string Code { get; set; }
+    public string Title { get; set; }
+    
+    public string? Code { get; set; }
 
     public Chatroom()
     {
