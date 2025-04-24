@@ -18,6 +18,10 @@ public class Message : BaseEntity
     // Foreign key for the Chatroom relationship
     [Required]
     public int ChatroomId { get; set; }
+
+    [Required]
+    public DateTime CreatedAt { get; set; }
+
     [ForeignKey("ChatroomId")]
     public virtual Chatroom? Chatroom { get; set; }
 }

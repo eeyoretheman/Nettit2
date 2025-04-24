@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Nettit.Data;
 using Nettit.Data.Entity;
+using Nettit.Models;
 
 namespace Nettit.Controllers
 {
@@ -53,7 +54,7 @@ namespace Nettit.Controllers
             return View();
         }
 
-        [Authorize(Roles = "User,Admin")]
+        // [Authorize(Roles = "User,Admin")]
         // POST: Chatrooms/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -70,9 +71,17 @@ namespace Nettit.Controllers
             {
                 _context.Add(chatroom);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                // Turn these into views for better code clarity
+                // Should always be empty
+                var messages = _context.Messages.Where(m => m.ChatroomId == chatroom.Id).Include(m => m.User).ToList();
+                var viewModel = new nChatroomViewModel { Chatroom = chatroom, Messages = messages };
+
+                return View("/Views/n/Index.cshtml", viewModel);
             }
-            return View(chatroom);
+
+            // Invalid state shouldn't happen, but it should probably be addressed anyway
+            return View("/Views/Home/Index.cshtml");
         }
 
         [Authorize(Roles = "Admin")]

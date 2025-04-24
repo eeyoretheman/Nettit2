@@ -2,7 +2,54 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<main class="container">
+    <h1>Welcome to the world's most scuffed chat platform.</h1>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <section style="padding: 2rem;">
+            <button class="primary" data-target="createChatroomModal" onclick="toggleModal('createChatroomModal')" style="margin-bottom: 1.5rem;">
+                <strong>Create a new chatroom</strong>
+            </button>
+
+            <h3 style="margin-top: 1rem;">If you want to join an already existing chatroom, ask for an invite link.</h3>
+        </section>
+
+        <!-- Create New Chat Modal -->
+        <dialog id="createChatroomModal">
+            <article>
+                <header>
+                    <button aria-label="Close" rel="prev" onclick="toggleModal('createChatroomModal')"></button>
+                    <p>
+                        <strong>Create New Chatroom</strong>
+                    </p>
+                </header>
+
+                <form method="post" asp-controller="Chatrooms" asp-action="Create">
+                    @Html.AntiForgeryToken()
+
+                    <label for="Title">
+                        Chatroom Title
+                        <input type="text" id="Title" name="Title" placeholder="Enter a title for your chatroom" required>
+                    </label>
+
+                    <footer>
+                        <button type="submit">Create</button>
+                    </footer>
+                </form>
+            </article>
+        </dialog>
+
+        <!-- JavaScript for Modal Toggle -->
+        <script>
+            function toggleModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal.open) {
+                    modal.close();
+                } else {
+                    modal.showModal();
+                }
+            }
+        </script>
+    }
+</main>

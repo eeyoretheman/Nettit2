@@ -1,26 +1,83 @@
 ﻿@model Nettit.Models.nChatroomViewModel
-
 @{
-    ViewData["Title"] = "n";
+    ViewData["Title"] = @Model.Chatroom.Title;
 }
 
-<h1>Details</h1>
+<main class="container">
+    <header style="text-align: center; margin-bottom: 2rem;">
+        <h1 style="margin-bottom: 0.5rem;">@Model.Chatroom.Title</h1>
+        <p><a href="/n/@Model.Chatroom.Code"><strong>Invite Link</strong></a></p>
+    </header>
 
-<div>
-    <h4>Chatroom</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Chatroom.Title)
-            @Html.DisplayNameFor(model => model.Chatroom.Code)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Chatroom.Title)
-            @Html.DisplayFor(model => model.Chatroom.Code)
-        </dd>
-    </dl>
+    <section id="messageContainer">
+        @if (Model.Messages != null && Model.Messages.Any())
+        {
+            <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+                @foreach (var message in Model.Messages)
+                {
+                    <article>
+                        <small>
+                            <header style="display: inline">
+                                <strong>@message.User?.UserName</strong>
+                                <p class="message-date" data-utc="@message.CreatedAt.ToString("o")"></p>
+                            </header>
+                        </small>
+                        <p>@message.Content</p>
+                    </article>
+                }
+            </div>
+        }
+        else
+        {
+            <p>No messages yet. Be the first to say something!</p>
+        }
+    </section>
 
-    @foreach (var item in Model.Messages) {
-        <p>@item.Content</p>
+    <section style="position: fixed; bottom: 0; left: 0; right: 0; padding: 1rem; box-shadow: 0 -2px 10px rgba(0,0,0,0.1);">
+        <div class="container">
+            <form method="post" asp-controller="Messages" asp-action="Create">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="ChatroomId" value="@Model.Chatroom.Id" />
+                <textarea id="Content" name="Content" rows="3" placeholder="A nice message..." required></textarea>
+                <button type="submit" class="contrast">Send</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Spacer to prevent content from being hidden behind the fixed form -->
+    <div style="height: 180px;"></div>
+</main>
+
+<script>
+    // Format dates to local time
+    document.querySelectorAll(".message-date").forEach(el => {
+        const utc = el.dataset.utc;
+        if (utc) {
+            const localTime = new Date(utc).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+            el.textContent = localTime;
+        }
+    });
+
+    // Scroll to bottom on page load
+    document.addEventListener("DOMContentLoaded", function() {
+        window.scrollTo(0, document.body.scrollHeight);
+    });
+
+    // Keep scrolled to bottom after form submission
+    const form = document.querySelector("form");
+    if (form) {
+        form.addEventListener("submit", function() {
+            // Store a flag in sessionStorage to indicate we should scroll on next page load
+            sessionStorage.setItem("scrollToBottom", "true");
+        });
     }
-</div>
+
+    // Check if we need to scroll due to form submission (page reload)
+    if (sessionStorage.getItem("scrollToBottom") === "true") {
+        sessionStorage.removeItem("scrollToBottom");
+        // Use a slight delay to ensure DOM is fully loaded
+        setTimeout(function() {
+            window.scrollTo(0, document.body.scrollHeight);
+        }, 100);
+    }
+</script>

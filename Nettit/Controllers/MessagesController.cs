@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Nettit.Data;
 using Nettit.Data.Entity;
+using Nettit.Models;
 
 namespace Nettit.Controllers
 {
@@ -66,6 +67,7 @@ namespace Nettit.Controllers
         public async Task<IActionResult> Create([Bind("Content,ChatroomId,Id")] Message message)
         {
             message.UserId = _userManager.GetUserId(User);
+            message.CreatedAt = DateTime.Now;
 
             if (!ModelState.IsValid)
             {
@@ -83,11 +85,14 @@ namespace Nettit.Controllers
             {
                 _context.Add(message);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["ChatroomId"] = new SelectList(_context.Chatrooms, "Id", "Code", message.ChatroomId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName", message.UserId);
-            return View(message);
+
+            var messages = _context.Messages.Where(m => m.ChatroomId == message.ChatroomId).Include(m => m.User).ToList();
+            var chatroom = _context.Chatrooms.Where(c => c.Id == message.ChatroomId).First();
+
+            var viewModel = new nChatroomViewModel { Chatroom = chatroom, Messages = messages};
+
+            return View("/Views/n/Index.cshtml", viewModel);
         }
 
         // GET: Messages/Edit/5
