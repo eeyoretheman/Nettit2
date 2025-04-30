@@ -15,9 +15,9 @@ namespace Nettit.Controllers
     public class MessagesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<NettitUser> _userManager;
 
-        public MessagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public MessagesController(ApplicationDbContext context, UserManager<NettitUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -170,20 +170,40 @@ namespace Nettit.Controllers
             return View(message);
         }
 
-        // POST: Messages/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var message = await _context.Messages.FindAsync(id);
-            if (message != null)
+            var message = await _context.Messages.Include(m => m.User).FirstOrDefaultAsync(m => m.Id == id);
+
+            if (message == null)
             {
-                _context.Messages.Remove(message);
+                return NotFound();
             }
 
+            var currentUserId = _userManager.GetUserId(User);
+            var isAdmin = User.IsInRole("Admin");
+
+            // Only allow deletion by the original user or an admin
+            if (message.UserId != currentUserId && !isAdmin)
+            {
+                return Forbid();
+            }
+
+            _context.Messages.Remove(message);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            // Redirect back to the chatroom after deletion
+            var chatroom = await _context.Chatrooms.FirstOrDefaultAsync(c => c.Id == message.ChatroomId);
+            var messages = await _context.Messages
+                .Where(m => m.ChatroomId == message.ChatroomId)
+                .Include(m => m.User)
+                .ToListAsync();
+
+            var viewModel = new nChatroomViewModel { Chatroom = chatroom, Messages = messages };
+            return View("/Views/n/Index.cshtml", viewModel);
         }
+
 
         private bool MessageExists(int id)
         {

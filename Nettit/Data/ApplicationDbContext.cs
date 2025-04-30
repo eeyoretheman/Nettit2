@@ -11,6 +11,6 @@ public class ApplicationDbContext : IdentityDbContext
     {
     }
     public DbSet<Chatroom> Chatrooms { get; set; } = default!;
-
-    public DbSet<Message> Messages { get; set; } = default!;
+    public DbSet<NettitUser> NettitUsers { get; set; } = default!;
+   public DbSet<Message> Messages { get; set; } = default!;
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nettit.Data;
 
@@ -11,9 +12,11 @@ using Nettit.Data;
 namespace Nettit.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250430154247_AddCustomUserClass")]
+    partial class AddCustomUserClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,11 +89,6 @@ namespace Nettit.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -142,10 +140,6 @@ namespace Nettit.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator().HasValue("IdentityUser");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -244,16 +238,11 @@ namespace Nettit.Data.Migrations
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NettitUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("NettitUserId");
 
                     b.ToTable("Chatrooms");
                 });
@@ -286,13 +275,6 @@ namespace Nettit.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("Nettit.Data.Entity.NettitUser", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.HasDiscriminator().HasValue("NettitUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -346,13 +328,6 @@ namespace Nettit.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Nettit.Data.Entity.Chatroom", b =>
-                {
-                    b.HasOne("Nettit.Data.Entity.NettitUser", null)
-                        .WithMany("Chatrooms")
-                        .HasForeignKey("NettitUserId");
-                });
-
             modelBuilder.Entity("Nettit.Data.Entity.Message", b =>
                 {
                     b.HasOne("Nettit.Data.Entity.Chatroom", "Chatroom")
@@ -373,11 +348,6 @@ namespace Nettit.Data.Migrations
             modelBuilder.Entity("Nettit.Data.Entity.Chatroom", b =>
                 {
                     b.Navigation("Messages");
-                });
-
-            modelBuilder.Entity("Nettit.Data.Entity.NettitUser", b =>
-                {
-                    b.Navigation("Chatrooms");
                 });
 #pragma warning restore 612, 618
         }
