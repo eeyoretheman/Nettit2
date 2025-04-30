@@ -1,5 +1,31 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<Nettit.Data.Entity.Chatroom>
+
 @{
+    ViewData["Title"] = "Your Chatrooms";
 }
+
+<main class="container">
+    <header style="text-align: center; margin-bottom: 2rem;">
+        <h1>Your Chatrooms</h1>
+        <p>Click a chatroom to join the conversation.</p>
+    </header>
+
+    @if (Model != null && Model.Any())
+    {
+        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1rem;">
+            @foreach (var chatroom in Model)
+            {
+                <li style="padding: 1rem; border: 1px solid #ccc; border-radius: 8px;">
+                    <a href="/n/@chatroom.Code" style="text-decoration: none; color: inherit;">
+                        <h2 style="margin: 0;">@chatroom.Title</h2>
+                        <p style="margin: 0.5rem 0 0;"><strong>Invite Link:</strong> /n/@chatroom.Code</p>
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>You haven't joined any chatrooms yet. Try visiting a /n/{code} link!</p>
+    }
+</main>
