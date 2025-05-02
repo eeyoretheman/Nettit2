@@ -87,12 +87,12 @@ namespace Nettit.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            var messages = _context.Messages.Where(m => m.ChatroomId == message.ChatroomId).Include(m => m.User).ToList();
+            // var messages = _context.Messages.Where(m => m.ChatroomId == message.ChatroomId).Include(m => m.User).ToList();
             var chatroom = _context.Chatrooms.Where(c => c.Id == message.ChatroomId).First();
 
-            var viewModel = new nChatroomViewModel { Chatroom = chatroom, Messages = messages};
+            // var viewModel = new nChatroomViewModel { Chatroom = chatroom, Messages = messages};
 
-            return View("/Views/n/Index.cshtml", viewModel);
+            return Redirect($"/n/{chatroom.Code}");
         }
 
         // GET: Messages/Edit/5

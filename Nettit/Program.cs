@@ -14,8 +14,8 @@ namespace Nettit
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<NettitUser>>();
 
-            string adminEmail = "admin@gmail.com";  //   
-            string adminPassword = "Admin123!";       //  
+            string adminEmail = "admin@gmail.com";
+            string adminPassword = "Admin123!";
 
 
             if (!await roleManager.RoleExistsAsync("Admin"))

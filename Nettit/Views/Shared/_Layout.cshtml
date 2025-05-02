@@ -5,19 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Nettit</title>
 
-    <!-- Custom styles -->
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/Nettit.styles.css" asp-append-version="true" />
+
+    <style>
+        .main-nav {
+            background-color: #006644; /* darker jade */
+            padding: 0.5rem 0; /* smaller nav bar height */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .main-nav .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .main-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem; /* larger nav links */
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+        }
+
+        .main-nav a:hover {
+            text-decoration: underline;
+        }
+
+        .main-nav .brand {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+    </style>
 </head>
 <body>
-    <header class="container">
-        <nav>
+    <header class="main-nav">
+        <nav class="container nav">
             <ul>
-                <li><strong><a asp-area="" asp-controller="Home" asp-action="Index">Nettit</a></strong></li>
+                <li><strong><a href="/" class="brand">Nettit</a></strong></li>
             </ul>
             <ul>
-                <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/n/me">Your Chatrooms</a></li>
                 <li><partial name="_LoginPartial" /></li>
             </ul>
         </nav>
@@ -27,14 +59,6 @@
         @RenderBody()
     </main>
 
-    <footer class="container">
-        <hr />
-        <small>
-            &copy; 2025 - Nettit - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </small>
-    </footer>
-
-    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

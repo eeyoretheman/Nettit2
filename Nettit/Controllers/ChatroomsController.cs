@@ -74,10 +74,10 @@ namespace Nettit.Controllers
 
                 // Turn these into views for better code clarity
                 // Should always be empty
-                var messages = _context.Messages.Where(m => m.ChatroomId == chatroom.Id).Include(m => m.User).ToList();
-                var viewModel = new nChatroomViewModel { Chatroom = chatroom, Messages = messages };
+                // var messages = _context.Messages.Where(m => m.ChatroomId == chatroom.Id).Include(m => m.User).ToList();
+                // var viewModel = new nChatroomViewModel { Chatroom = chatroom, Messages = messages };
 
-                return View("/Views/n/Index.cshtml", viewModel);
+                return Redirect($"/n/{chatroom.Code}");
             }
 
             // Invalid state shouldn't happen, but it should probably be addressed anyway
