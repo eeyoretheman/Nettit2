@@ -35,17 +35,12 @@ namespace Nettit.Controllers
             }
 
             var user = await _userManager.GetUserAsync(User);
-            if (user != null)
-            {
-                // Load user's chatrooms explicitly if needed
-                await _context.Entry(user).Collection(u => u.Chatrooms).LoadAsync();
+            await _context.Entry(user).Collection(u => u.Chatrooms).LoadAsync();
 
-                // Add chatroom to user's list if not already added
-                if (!user.Chatrooms.Any(c => c.Id == chatroom.Id))
-                {
-                    user.Chatrooms.Add(chatroom);
-                    await _context.SaveChangesAsync();
-                }
+            if (!user.Chatrooms.Any(c => c.Id == chatroom.Id))
+            {
+                user.Chatrooms.Add(chatroom);
+                await _context.SaveChangesAsync();
             }
 
             var messages = _context.Messages.Where(m => m.ChatroomId == chatroom.Id).Include(m => m.User).ToList();
@@ -64,7 +59,9 @@ namespace Nettit.Controllers
             if (user == null)
                 return Challenge(); // Redirect to login
 
-            await _context.Entry(user).Collection(u => u.Chatrooms).LoadAsync();
+            await _context.Entry(user)
+                .Collection(u => u.Chatrooms)
+                .LoadAsync();
 
             return View(user.Chatrooms);
         }

@@ -13,7 +13,7 @@ public class Message : BaseEntity
 
     // Navigation property to link to the Identity user
     [ForeignKey("UserId")]
-    public virtual IdentityUser? User { get; set; }
+    public virtual NettitUser? User { get; set; }
 
     // Foreign key for the Chatroom relationship
     [Required]
