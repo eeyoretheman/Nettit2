@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nettit", "Nettit\Nettit.csproj", "{A6A25C3F-A7F4-4FDD-BB06-4C035EE73F73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{4FDC2DA3-56EE-47EF-BB9F-24D5337016FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A6A25C3F-A7F4-4FDD-BB06-4C035EE73F73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6A25C3F-A7F4-4FDD-BB06-4C035EE73F73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6A25C3F-A7F4-4FDD-BB06-4C035EE73F73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FDC2DA3-56EE-47EF-BB9F-24D5337016FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FDC2DA3-56EE-47EF-BB9F-24D5337016FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FDC2DA3-56EE-47EF-BB9F-24D5337016FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FDC2DA3-56EE-47EF-BB9F-24D5337016FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

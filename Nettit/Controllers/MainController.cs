@@ -7,12 +7,12 @@ using Nettit.Models;
 
 namespace Nettit.Controllers
 {
-    public class nController : Controller
+    public class MainController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<NettitUser> _userManager;
 
-        public nController(ApplicationDbContext context, UserManager<NettitUser> userManager)
+        public MainController(ApplicationDbContext context, UserManager<NettitUser> userManager)
         {
             _context = context;
             _userManager = userManager;

@@ -170,9 +170,9 @@ namespace Nettit.Controllers
             return View(message);
         }
 
-        [HttpPost, ActionName("DeleteConfirmed")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var message = await _context.Messages.Include(m => m.User).FirstOrDefaultAsync(m => m.Id == id);
 
@@ -200,8 +200,7 @@ namespace Nettit.Controllers
                 .Include(m => m.User)
                 .ToListAsync();
 
-            var viewModel = new nChatroomViewModel { Chatroom = chatroom, Messages = messages };
-            return View("/Views/n/Index.cshtml", viewModel);
+            return Redirect($"/n/{chatroom.Code}");
         }
 
 
