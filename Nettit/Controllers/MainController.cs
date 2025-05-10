@@ -26,6 +26,13 @@ namespace Nettit.Controllers
                 return NotFound();
             }
 
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user is null)
+            {
+                return Challenge(); // Redirect to login
+            }
+
             var chatroom = await _context.Chatrooms
                 .FirstOrDefaultAsync(m => m.Code == n);
 
@@ -34,7 +41,6 @@ namespace Nettit.Controllers
                 return NotFound();
             }
 
-            var user = await _userManager.GetUserAsync(User);
             await _context.Entry(user).Collection(u => u.Chatrooms).LoadAsync();
 
             if (!user.Chatrooms.Any(c => c.Id == chatroom.Id))
@@ -56,8 +62,10 @@ namespace Nettit.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            if (user == null)
+            if (user is null)
+            {
                 return Challenge(); // Redirect to login
+            }
 
             await _context.Entry(user)
                 .Collection(u => u.Chatrooms)

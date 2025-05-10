@@ -35,37 +35,11 @@ namespace Nettit.Controllers
                 _context.Add(chatroom);
                 await _context.SaveChangesAsync();
 
-                // Turn these into views for better code clarity
-                // Should always be empty
-                // var messages = _context.Messages.Where(m => m.ChatroomId == chatroom.Id).Include(m => m.User).ToList();
-                // var viewModel = new nChatroomViewModel { Chatroom = chatroom, Messages = messages };
-
                 return Redirect($"/n/{chatroom.Code}");
             }
 
-            // Invalid state shouldn't happen, but it should probably be addressed anyway
-            return View("/Views/Home/Index.cshtml");
-        }
-
-        [Authorize(Roles = "Admin")]
-        // POST: Chatrooms/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var chatroom = await _context.Chatrooms.FindAsync(id);
-            if (chatroom != null)
-            {
-                _context.Chatrooms.Remove(chatroom);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ChatroomExists(int id)
-        {
-            return _context.Chatrooms.Any(e => e.Id == id);
+            // Invalid state shouldn't happen, but it should be addressed
+            return Redirect("/");
         }
     }
 }
