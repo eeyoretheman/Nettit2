@@ -76,6 +76,15 @@
         }
     });
 
+    const input = document.getElementById('Content');
+
+    input.addEventListener('input', function () {
+        // Replace the input value with something else
+        this.value = this.value.replace(":smile:", "😃")
+        this.value = this.value.replace(":wink:", "😉")
+        this.value = this.value.replace(":lol:", "😂")
+    });
+
     // Scroll to bottom on page load
     document.addEventListener("DOMContentLoaded", function() {
         window.scrollTo(0, document.body.scrollHeight);
@@ -98,4 +107,36 @@
             window.scrollTo(0, document.body.scrollHeight);
         }, 100);
     }
+
+    setInterval(async () => {
+        const response = await fetch(location.href + "/changed");
+
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
+
+        let message_ids = localStorage.getItem("message_ids");
+
+        if (message_ids != null) {
+            message_ids = JSON.parse(message_ids);
+        } else {
+            message_ids = [];
+        }
+        
+        if (message_ids.length != json.length) {
+            console.log("Length mismatch")
+            localStorage.setItem("message_ids", JSON.stringify(json));
+            location.reload();
+        } else {
+            for (let i = 0; i < json.length; i++) {
+                if (message_ids[i] != json[i]) {
+                    console.log("Different at " + i)
+                    localStorage.setItem("message_ids", JSON.stringify(json));
+                    location.reload();
+                }
+            }
+        }
+    }, 1000);
 </script>

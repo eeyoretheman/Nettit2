@@ -21,6 +21,20 @@ namespace Nettit.Controllers
             _context = context;
         }
 
+        [Route("/n/{code}/changed")]
+        public async Task<IActionResult> ChatroomChanged(string code)
+        {
+            var messages = new List<int>();
+            var chatroom = _context.Chatrooms.Where(c => c.Code == code).Include(m => m.Messages).First();
+            
+            foreach (var message in chatroom.Messages)
+            {
+                messages.Add(message.Id);
+            }
+
+            return Ok(messages);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Title,Id")] Chatroom chatroom)
