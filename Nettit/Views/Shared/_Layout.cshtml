@@ -10,8 +10,8 @@
 
     <style>
         .main-nav {
-            background-color: #006644; /* darker jade */
-            padding: 0.5rem 0; /* smaller nav bar height */
+            background-color: #006644;
+            padding: 0.5rem 0;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
         }
@@ -25,7 +25,7 @@
         .main-nav a {
             color: white;
             text-decoration: none;
-            font-size: 1.5rem; /* larger nav links */
+            font-size: 1.5rem;
             font-weight: 600;
             padding: 0.25rem 0.75rem;
         }
@@ -49,8 +49,14 @@
             </ul>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/n/me">Your Chatrooms</a></li>
-                <li><partial name="_LoginPartial" /></li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li><a href="/n/me">Me</a></li>
+                }
+                else
+                {
+                    <li><a href="/n/me">Login</a></li>
+                }
             </ul>
         </nav>
     </header>

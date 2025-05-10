@@ -4,6 +4,12 @@
 }
 
 <main class="container">
+    <article>
+        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+        </form>
+    </article>
+
     <article class="chatrooms-container">
         <header>
             <h1>Your Chatrooms</h1>

@@ -21,43 +21,6 @@ namespace Nettit.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "Admin")]
-        // GET: Chatrooms
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Chatrooms.ToListAsync());
-        }
-
-        [Authorize(Roles = "Admin")]
-        // GET: Chatrooms/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var chatroom = await _context.Chatrooms
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (chatroom == null)
-            {
-                return NotFound();
-            }
-
-            return View(chatroom);
-        }
-
-        [Authorize(Roles = "Admin")]
-        // GET: Chatrooms/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // [Authorize(Roles = "User,Admin")]
-        // POST: Chatrooms/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Title,Id")] Chatroom chatroom)
@@ -85,82 +48,10 @@ namespace Nettit.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        // GET: Chatrooms/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var chatroom = await _context.Chatrooms.FindAsync(id);
-            if (chatroom == null)
-            {
-                return NotFound();
-            }
-            return View(chatroom);
-        }
-
-        [Authorize(Roles = "Admin")]
-        // POST: Chatrooms/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Chatrooms/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Code,Id")] Chatroom chatroom)
-        {
-            if (id != chatroom.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(chatroom);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ChatroomExists(chatroom.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(chatroom);
-        }
-
-        [Authorize(Roles = "Admin")]
-        // GET: Chatrooms/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var chatroom = await _context.Chatrooms
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (chatroom == null)
-            {
-                return NotFound();
-            }
-
-            return View(chatroom);
-        }
-
-        [Authorize(Roles = "Admin")]
-        // POST: Chatrooms/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var chatroom = await _context.Chatrooms.FindAsync(id);
             if (chatroom != null)
