@@ -51,7 +51,7 @@ namespace Nettit.Controllers
 
             var messages = _context.Messages.Where(m => m.ChatroomId == chatroom.Id).Include(m => m.User).ToList();
 
-            var viewModel = new nChatroomViewModel { Chatroom = chatroom, Messages = messages };
+            var viewModel = new ViewModels { Chatroom = chatroom, Messages = messages };
 
             return View(viewModel);
         }

@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Nettit.Models.ChatroomOverviewViewModel>
+
+<section class="container">
+    <h1>All Chatrooms</h1>
+
+    @foreach (var chatroom in Model)
+    {
+        <article class="chatroom" style="margin-bottom: 2rem;">
+            <header style="display: flex; justify-content: space-between; align-items: center;">
+                <hgroup>
+                    <h2>@chatroom.Title</h2>
+                    <p><small>Code: @chatroom.Code</small></p>
+                </hgroup>
+                <form method="post" action="/n/delete/@chatroom.ChatroomId" onsubmit="return confirm('Are you sure you want to delete this chatroom?');">
+                    <button type="submit" class="contrast">Delete</button>
+                </form>
+            </header>
+
+            <details>
+                <summary><strong>Users</strong> (@chatroom.Users.Count)</summary>
+                <ul>
+                    @foreach (var user in chatroom.Users)
+                    {
+                        <li>@user.UserName (@user.Email)</li>
+                    }
+                </ul>
+            </details>
+
+            <details>
+                <summary><strong>Messages</strong> (@chatroom.Messages.Count)</summary>
+                <ul>
+                    @foreach (var msg in chatroom.Messages)
+                    {
+                        <li>
+                            <strong>@(msg.Sender?.UserName ?? "Unknown")</strong>: @msg.Content
+                            <br />
+                            <small>@msg.CreatedAt.ToString("g")</small>
+                        </li>
+                    }
+                </ul>
+            </details>
+        </article>
+    }
+</section>
