@@ -14,19 +14,19 @@
 
         <label>
             Username
-            <input asp-for="Input.Username" type="text" autocomplete="email" placeholder="name@example.com" required />
-            <small class="text-danger" asp-validation-for="Input.Email"></small>
+            <input asp-for="Input.Username" type="text" autocomplete="username" placeholder="a_really_nice_username" required />
+            <small class="text-danger" asp-validation-for="Input.Username"></small>
         </label>
 
         <label>
             Password
-            <input asp-for="Input.Password" type="password" autocomplete="new-password" placeholder="Create a password" required />
+            <input asp-for="Input.Password" type="password" autocomplete="new-password" placeholder="Not1234#" required />
             <small class="text-danger" asp-validation-for="Input.Password"></small>
         </label>
 
         <label>
             Confirm Password
-            <input asp-for="Input.ConfirmPassword" type="password" autocomplete="new-password" placeholder="Confirm your password" required />
+            <input asp-for="Input.ConfirmPassword" type="password" autocomplete="new-password" placeholder="Not1234#" required />
             <small class="text-danger" asp-validation-for="Input.ConfirmPassword"></small>
         </label>
 

@@ -62,8 +62,7 @@ namespace Nettit.Controllers
                 Users = cr.Users.Select(u => new UserViewModel
                 {
                     Id = u.Id,
-                    UserName = u.UserName,
-                    Email = u.Email
+                    UserName = u.UserName
                 }).ToList(),
                 Messages = cr.Messages.Select(m => new MessageViewModel
                 {
@@ -73,8 +72,7 @@ namespace Nettit.Controllers
                     Sender = m.User != null ? new UserViewModel
                     {
                         Id = m.User.Id,
-                        UserName = m.User.UserName,
-                        Email = m.User.Email
+                        UserName = m.User.UserName
                     } : null
                 }).ToList()
             }).ToList();

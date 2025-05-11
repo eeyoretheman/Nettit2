@@ -57,6 +57,11 @@
                 {
                     <li><a href="/n/me">Login</a></li>
                 }
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <li><a href="/n/all">Control panel</a></li>
+                }
             </ul>
         </nav>
     </header>
